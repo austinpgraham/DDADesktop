@@ -1,0 +1,57 @@
+name: Test Build
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  Build-And-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+        with:
+          flutter-version: 3.29.2
+      - name: Check formatting of lib
+        run: dart format lib/* --set-exit-if-changed
+      - name: Check formatting of test
+        run: dart format test/* --set-exit-if-changed
+      - name: Run tests
+        run: flutter test
+  Build-Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Linux Dependencies
+        run: |
+          apt update && apt install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+        with:
+          flutter-version: 3.22.2
+      - run: flutter build linux --release
+  Build-MacOS:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+        with:
+          flutter-version: 3.22.2
+      - run: flutter build macos --release --no-codesign
+  Build-Windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+        with:
+          flutter-version: 3.22.2
+      - run: flutter build windows --release
