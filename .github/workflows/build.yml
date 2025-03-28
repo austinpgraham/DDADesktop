@@ -21,7 +21,11 @@ jobs:
       - name: Check formatting of test
         run: dart format test/* --set-exit-if-changed
       - name: Run tests
-        run: flutter test
+        run: flutter test --coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
   Build-Linux:
     runs-on: ubuntu-latest
     steps:
@@ -29,11 +33,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Linux Dependencies
         run: |
-          apt update && apt install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+          sudo apt update && sudo apt install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
       - name: Setup Flutter
         uses: ./.github/actions/setup-flutter
         with:
-          flutter-version: 3.22.2
+          flutter-version: 3.29.2
       - run: flutter build linux --release
   Build-MacOS:
     runs-on: macos-latest
@@ -43,7 +47,7 @@ jobs:
       - name: Setup Flutter
         uses: ./.github/actions/setup-flutter
         with:
-          flutter-version: 3.22.2
+          flutter-version: 3.29.2
       - run: flutter build macos --release --no-codesign
   Build-Windows:
     runs-on: windows-latest
@@ -53,5 +57,5 @@ jobs:
       - name: Setup Flutter
         uses: ./.github/actions/setup-flutter
         with:
-          flutter-version: 3.22.2
+          flutter-version: 3.29.2
       - run: flutter build windows --release
