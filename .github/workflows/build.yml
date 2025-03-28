@@ -48,7 +48,7 @@ jobs:
         uses: ./.github/actions/setup-flutter
         with:
           flutter-version: 3.29.2
-      - run: flutter build macos --release --no-codesign
+      - run: flutter build macos --release
   Build-Windows:
     runs-on: windows-latest
     steps:
