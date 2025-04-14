@@ -14,7 +14,7 @@ struct _MyApplication {
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
-const gchar* APP_TITLE = "DDA Desktop";
+const gchar* APP_TITLE = "Create & Collaborate";
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
